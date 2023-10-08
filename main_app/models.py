@@ -6,6 +6,9 @@ class StatusType(models.TextChoices):
     PENDING = "pending", "Pending"
     DISPATCH = "dispatch", "Dispatch"
     DILVERIED = "dilveried", "Dilveried"
+    
+    
+      
 
 
 class Product(models.Model):
@@ -16,9 +19,9 @@ class Product(models.Model):
     mainPrice = models.IntegerField(default=0)
     afterDiscountPrice = models.IntegerField(default=0)
     category = models.CharField(max_length=50, default="")
-    quantity = models.IntegerField(default=0 , null=True , blank=True)
     isSale = models.BooleanField(default=False)
     stock = models.IntegerField(default=0 , null=True , blank=True)
+    
     
 
     class Meta:
@@ -28,6 +31,18 @@ class Product(models.Model):
     def __str__(self):
         return self.productName
     
+    
+class CartProduct(models.Model):
+        
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product" , null=True)
+    quantity = models.IntegerField(default=0 , null=True , blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_cart_product")
+    
+    def __str__(self):
+        return self.user.username +" " +self.product.productName + " " + str(self.quantity) 
+
+        
+        
 class Address (models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_addresses")
     address = models.CharField(max_length=50)
@@ -40,10 +55,12 @@ class Address (models.Model):
     def __str__(self):
         return self.address +" " +self.user.username  
     
+    
+    
 class Order (models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_orders")
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name="orders")
-    products = models.ManyToManyField(Product)
+    cart_products = models.ManyToManyField(CartProduct)
     total = models.IntegerField(default=0)
     date = models.DateTimeField(auto_now_add=True)
     payment_id = models.CharField(max_length=50, default="" , null=True , blank=True)
