@@ -6,9 +6,14 @@ from main_app.models import Product , Address , User  , Order , CartProduct
 from main_app.api.serializers import AddressSerializer , OrderSerializer , ProductSerializer , CartProductSerializer ,OrderCreateSerializer , CartProductCreateSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend 
 
 class ProductView(generics.ListCreateAPIView):  
+    
+    filter_backends = [DjangoFilterBackend , filters.SearchFilter ]
+    filterset_fields = ['category' , 'isSale']
+    search_fields = ['productName'  , 'shortDes']
           
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
