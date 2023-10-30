@@ -20,7 +20,8 @@ urlpatterns = [
 
     # update the product cart data using id of product cart and pass quality and user id 
     path('cart-products/<int:pk>/', CartProductRetrieveUpdateDeleteView.as_view(), name='cart-product-retrieve-update-delete'),
-    #
+    
+    
     path('users/<int:user_id>/orders/', OrderListView.as_view(), name='order-list'),
     
     path('orders/create/', OrderCreateView.as_view(), name='order-create'),
