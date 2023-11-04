@@ -16,6 +16,7 @@ urlpatterns = [
     #create product cart for user
     
     path('users/<int:user_id>/cart-products/', CartProductListView.as_view(), name='cart-product-list'),
+    
      path('cart-product/create/', CartProductCreateView.as_view(), name='cart-product-create'),
 
     # update the product cart data using id of product cart and pass quality and user id 
